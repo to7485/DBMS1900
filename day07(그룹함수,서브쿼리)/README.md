@@ -8,11 +8,15 @@
 
 --WHERE 절에서는 사용할 수 없다.
 
-- AVG() : 평균
-- MAX() : 최대값
-- MIN() : 최소값
-- SUM() : 총 합
-- COUNT() : 개수
+|함수|기능|
+|---|------|
+|COUNT|행들의 개수를 반환|
+|MIN|행들의 최소값을 반환|
+|MAX|행들의 최대값을 반환|
+|SUM|행들의 합계를 반환|
+|AVG|행들의 평균을 반환한다.|
+|STDDEV|행들의 표준편차를 반환한다.|
+|VARIANCE|행들의 분산을 반환한다.|
 
 ```
 SELECT AVG(HEIGHT), MAX(HEIGHT),MIN(HEIGHT),SUM(HEIGHT),COUNT(HEIGHT) FROM PLAYER.
