@@ -1,4 +1,4 @@
-## 집계함수(그룹함수)
+## 집계함수
 집계함수는 많이 사용이 된다.<br>
 회원가입이나 로그인을 할 때도 쓰인다.<br>
 중복검사를 할 때, 댓글의 전체 개수를 세야 할 때, 등 데이터베이스 부분에서 집계가 가능하다.<br>
@@ -90,6 +90,64 @@ SELECT DEPARTMENT_ID, SUM(SALARY)
 FROM EMPLOYEES 
 GROUP BY DEPARTMENT_ID;
 ```
+## 그룹함수
+
+```SQL
+CREATE TABLE 월별매출 (
+    상품ID VARCHAR2(5),
+    월 VARCHAR2(10),
+    회사 VARCHAR2(10),
+    매출액 INTEGER );
+    
+INSERT INTO  월별매출 VALUES ('P001', '2019.10', '삼성', 15000);
+INSERT INTO  월별매출 VALUES ('P001', '2019.11', '삼성', 25000);
+INSERT INTO  월별매출 VALUES ('P002', '2019.10', 'LG', 10000);
+INSERT INTO  월별매출 VALUES ('P002', '2019.11', 'LG', 20000);
+INSERT INTO  월별매출 VALUES ('P003', '2019.10', '애플', 15000);
+INSERT INTO  월별매출 VALUES ('P003', '2019.11', '애플', 10000);
+
+SELECT * FROM 월별매출;
+```
+
+- ROLLUP
+    - ROLLUP(A) : A 그룹핑 -> 합계
+    - ROLLUP(A,B) : A,B그룹핑 -> A소계/합계
+    - ROLLUP(A,B,C) : A,B,C그룹핑 -> (A소계,B소계)/합계
+ 
+```SQL
+SELECT 상품ID, 월, SUM(매출액) AS 매출액
+FROM 월별매출
+GROUP BY ROLLUP(상품ID, 월);
+```
+
+![image](https://github.com/to7485/DBMS1900/assets/54658614/0cce5aea-3337-477c-94c6-f6e60754f04b)
+
+- CUBE
+    - CUBE(A) : A그룹핑 -> 합계
+    - CUBE(A,B) : A,B그룹핑/A그룹핑/B그룹핑 -> A소계,B소계/합계
+    - CUBE(A,B,C) : A,B,C그룹핑/A,B그룹핑/A,C그룹핑/B,C그룹핑/A그룹핑/B그룹핑/C그룹핑 -> (A소계,B소계),(A소계),(B소계)/합계
+
+```SQL
+SELECT 상품ID, 월, SUM(매출액) AS 매출액
+FROM 월별매출
+GROUP BY CUBE(상품ID, 월);
+```
+
+![image](https://github.com/to7485/DBMS1900/assets/54658614/bf9caa9e-af05-48f6-9c92-356542b60073)
+
+- GROUPING SETS
+    - GROUPING SETS(A,()) : A그룹핑 -> 합계
+    - GROUPING SETS(A,B,()) : A그룹핑/B그룹핑 -> 합계
+ 
+ ```SQL
+SELECT 상품ID, 월, SUM(매출액) AS 매출액
+FROM 월별매출
+GROUP BY GROUPING SETS(상품ID, 월);
+ ```
+ 
+ ![image](https://github.com/to7485/DBMS1900/assets/54658614/0d56776f-7458-4702-894d-50627e57ee79)
+
+
 ### HAVING절
 그룹함수에 대한 조건처리가 필요할 때 사용하는 Query<br>
 조건식을 사용할 때 그룹함수가 필요하다면 반드시 having 키워드를 사용해야 한다!!!!!<br>
