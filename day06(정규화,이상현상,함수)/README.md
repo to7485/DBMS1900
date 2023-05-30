@@ -82,121 +82,145 @@ SELECT PLAYER_NAME “선수 이름”, NVL(NATION, '등록','미등록')”국�
 1)	자원에 대한 연산을 수행할 수 있다.
 2)	개별적인 데이터 항목을 수행할 수 있다.
 
-### 함수의 종류
+## SQL함수
+- 사용자가 필요한 기능을 만드는 함수가 아닌, 오라클 자체적으로 제공하는 함수
+- 상황에 맞는 적절한 함수를 사용하기 위해서는 어떤 기능을 하는 함수들이 존재하는지 정확하게 파악하고 있어야 한다.
 
-1.	숫자형 함수
-2.	문자형 함수
-3.	날짜형 함수
+### 내장함수의 종류
+- 단일행 함수 : 1개의 행값이 함수에 적용되어 1개의 행을 반환한다.
+- 그룹 함수 : 1개 이상의 행의 값이 함수에 적용되어 1개의 값을 반환한다.
+
+## 문자함수
+|함수|기능|
+|---|------|
+|ASCII|지정된 문자의 ASCII값을 반환한다.|
+|CHR|지정된 수치와 일치하는 ASCII코드를 반환한다.|
+|RPAD|왼쪽 정렬 후 오른쪽에 생긴 빈공백에 특정 문자를 채워 반환한다.|
+|LPAD|오른쪽 정렬 후 오른쪽에 생긴 빈공백에 특정 문자를 채워 반환한다.|
+|TRIM|문자열 공백 문자들을 삭제한다.|
+|RTRIM|문자열 오른쪽(뒤)의 공백 문자들을 삭제한다.|
+|LTRIM|문자열 왼쪽(뒤)의 공백 문자들을 삭제한다.|
+|LOWER|지정된 문자를 소문자로 반환한다.|
+|UPPER|지정된 문자를 대문자로 반환한다.|
+|INSTR|특정 문자의 위치를 반환한다.|
+|INITCAP|지정된 문자열의 첫 단어를 대문자로 나머지는 소문자로 반환한다.|
+|SUBSTR|시작 위치부터 선택 개수만큼 문자를 반환한다.|
+|LENGTH|문자열의 길이를 반환한다.|
+|REPLACE|첫 번째 파라미터로 지정한 문자를 두번째 파라미터로 지정한 문자로 바꿔준다.|
 
 ```
-함수는 우리가 직접 만든 테이블이 아닌 dual이라고 하는 가상의 테이블에서 확인을 할 수가 있다.
+-- 지정된 문자 ASCII값을 반환한다.
+SELECT ASCII('A') FROM DUAL; --결과 : 65
 
-1. 숫자형 함수
---몫 구하기
-SELECT SALARY /2 FROM EMPLOYEES;
+-- 지정된 수치와 일치하는 ASCII코드를 반환한다.
+SELECT CHR(65) FROM DUAL; --결과 A
 
---나머지(% 모듈러스)
-SELECT MOD(10,3) FROM DUAL
+-- 왼쪽 정렬 후 오른쪽에 생긴 빈 공백에 특정 문자를 채워 반환한다.
+-- RPAD(데이터,고정길이,문자)
+-- 고정길이 안에 데이터를 출력하고 남는 공간을 문자로 채운다.
 
-문) 사번, 이름을 출력하되, 짝수 사번을 가진 사원들의 정보만 출력
-SELECT EMPLOYEE_ID, FIRST_NAME FROM EMPLOYEES WHERE mod(EMPLOY_ID,2) = 0;
+SELECT RPAD(DEPT_NAME,10,'*') FROM DEPT;
 
---값보다 큰 최근접 정수
-SELECT CEIL(3.14), CEIL(-3.14) FROM DUAL
---값보다 작은 최근접 정수
-SELECT CEIL(3.14), CEIL(-3.14) FROM DUAL
---반올림 함수
-SELECT round(3.141592),round(3.141592,4) FROM DUAL;
---버림
-SELECT TRUNC(3.9) FROM DUAL;
--글자의 길이 구하기
-SELECT LENGTH(‘JHON’) FROM DUAL;
+-- 오른쪽 정렬 후 왼쪽에 생긴 빈 공백에 특정 문자를 채워 반환한다.
+-- LPAD(데이터,고정길이,문자)
+-- 고정길이 안에 데이터를 출력하고 남는 공간을 문자로 채운다.
 
-문제) 사원테이블에서 이름의 길이가 6자 이상인 사원의 사번, 이름을 출력
-select employee_id ,first_name from employees where length(first_name)>=6;
+SELECT LPAD(DEPT_NAME,10,'*') FROM DEPT;
 
---양수면 1, 0이면 0, 음수면 -1을 반환하는 함수
-SELECT SIGN(-234), SIGN(0), SIGN(123) FROM DUAL;
+-- 문자열 공백 문자들을 삭제한다
+SELECT TRIM('  HELLOW  ') FROM DUAL;
 
+-- 컬럼이나 대상 문자열에서 특정 문자가 첫 번째나 마지막 위치에 있으면, 해당 특정 문자를 잘라낸 후 남은 문자열만 반환한다.
+SELECT TRIM('zzz' FROM 'zzzHELLOWzzz') FROM DUAL;
 
+-- 문자열 오른쪽(뒤)의 공백 문자들을 제거한다.
+SELECT RTRIM('HELLOW  ')FROM DUAL;
 
-2. 문자형 함수
-1) LOWER : 알파벳 값을 소문자로 변환
-2) UPPER : 알파벳 값을 대문자로 변환
-  3) INITCAP : 알파벳의 첫 글자만 대문자로 변환
+-- 문자열 왼쪽(앞)의 공백 문자들을 제거한다.
+SELECT LTRIM('   HELLOW')FROM DUAL;
 
+-- 특정문자의 위치를 반환한다.
+SELECT INSTR('HELLOW','O') FROM DUAL;
 
-select upper('abc') from dual;
-select upper('good morning') from dual;
+- 문자열에서 1번째 자리부터 검색하여 두번째로 나오게 되는 글자가 위치하는 자리를 반환한다.
+SELECT INSTR('HELLOW','L',1,2) FROM DUAL;
 
-예) 사원테이블의 모든 사원의 이름을 대문자로 표기하시오.
-select upper('first_name') upper, first_name from employees;
+-- 찾는 문자열이 없으면 0을 반환한다.
+SELECT INSTR('HELLOW','Z') FROM DUAL;
 
-이름이 첫글자만 대문자인지 전부다 소문자인지 알수가 없을 때 UPPER를 사용해서 통일을 해주면 WHERE을 쉽게 사용할 수 있다.
-
-예) 사원테이블에서 Michael이라는 이름의 사원에 대한 사번, 이름, 직종, 입사일을 검색
- select employee_id, first_name, job_id ,hire_date 
-from emplyoees 
-where UPPER(first_name) = UPPER('michael') 'MICHAEL';
-
-둘다 대문자로 만들어서 비교를 한다.
-
-SELECT LOWER('ABC') FROM DAUL;
-모조리 소문자로 만들어주는 메서드
-
-select lower('GOOD MORNING') from dual;
-
-UPPER,LOWER 말고도 살펴볼수 있는것들이 있다. 조금 더 보여주겠다.
-
-예) 8번째 값 뒤로 모든 데이터를 가져와라
-
-SELECT substr('good morning',8) from dual; 자바의 substr과 동일하다.
-
-예) 8번째 값부터 뒤로 2개의 문장(8,9번째)만 잘라내시오
-
-SELECT substr('good morning'8,2) FROM dual; 많이 사용하지는 않기 때문에 이런게 있다 정도 알고 있기
-
-문) 이름, 입사년도만 출력하시오
-
-SELECT FIRST_NAME, substr(HIRE_DATE,7) year FROM EMPLOYEES;
-컬럼명이 길어지기 때문에 별칭을 정해서 깔끔하게 정리해주는것도 좋다.
-
-예) replace() 필요한 문장을 교체하는 함수
-SELECT replace('good morning','good','hi') FROM dual;
-
-문) 부서번호가 50번인 사원들의 이름을 출력하되 이름중 'el'을 모두 '**'로 대체하여 출력하시오
-
-SELECT REPLACE(FIRST_NAME,'el','**') FROM EMPLOYEES WHERE DEPARTMENT_ID = 50;
-
-
---initcap : 첫 문자를 대문자로 변환하는 함수
-	   공백이나 /를 구분자로 인식함
+--첫 문자를 대문자로 변환하는 함수 공백이나 /를 구분자로 인식함
 select initcap('good morning') from dual;
 select initcap('good/morning') from dual;
 
+-- 문자열의 길이를 반환한다.
+select length('john') from dual;
 
+-- 첫 번째 지정한 문자를 두번째 지정한 문자로 바꿔 반환한다.
 
+문) 부서번호가 50번인 사원들의 이름을 출력하되 이름중 'el'을 모두 '**'로 대체하여 출력하시오
+SELECT REPLACE(FIRST_NAME,'el','**') FROM EMPLOYEES WHERE DEPARTMENT_ID = 50;
 
+```
 
+## 숫자함수
+|함수|기능|
+|---|------|
+|ABS|절대값을 반환한다.|
+|ROUND|특정 자리수에서 반올림을 하여 반환한다.|
+|FLOOR|주어진 숫자보다 작거나 같은 정수중 최대값을 반환한다.|
+|TRUNC|특정 자리수에서 잘라내고 반환한다.|
+|SIGN|주어진 값의 음수,정수,0 여부를 반환한다.|
+|CEIL|주어진 숫자보다 크거나 같은 정수 중 최소값을 반환한다.|
+|MOD|나누기 후 나머지를 반환한다.|
+|POWER|주어진 숫자의 지정된 수 만큼의 제곱값을 반환한다.|
 
+```
+-- 절대값을 반환한다.
+SELECT -10,ABS(-10) FROM DUAL;
 
+-- 특정 자리수에서 반올림하여 반환한다.
+-- 지정한 숫자가 양수이면 소수점 아래, 음수이면 소수점 위를 의미한다. 생략되면 반올림해서 정수를 반환한다
+SELECT ROUND(1234.567,1),ROUND(1234.567,-1),ROUND(1234.567) FROM DUAL;
 
+-- 주어진 숫자보다 작거나 같은 정수 중 최대값을 반환한다.
+SELECT FLOOR(2), FLOOR(2.1) FROM DUAL;
 
+-- 특정 자리수를 버리고 반환한다.
+SELECT TRUNC(1234.567,1),TRUNC(1234.567,-1),TRUNC(1234.567) FROM DUAL;
 
+-- 주어진 값의 음수,정수,0 여부를 반환한다.
+--음수는 -1, 0은 0, 양수는 1, NULL은 NULL을 반환한다.
+SELECT SIGN(-10),SIGN(0),SIGN(10),SIGN(NULL) FROM DUAL;
 
-3. 날짜형 함수
+-- 주어진 숫자보다 크거나 같은 정수 중 최소값을 반환한다.
+SELECT CEIL(2),CEIL(2.1) FROM DUAL;
 
-* 현재 날짜를 기억하는 키워드는 sysdate 다. db에도 자료형이 있는데 그중에서 날짜만 전용으로 저장하는 자료형에 값을 넣을수 있는게 sysdate다.
+-- 나누기 후 나머지를 반환한다.
+SELECT MOD(1,3),MOD(2,3),MOD(3,3),MOD(4,3),MOD(0,3) FROM DUAL;
 
-SELECT sysdate FROM dual; -> 되게 중요함 게시판을 만들어도 게시한 시간을 알 수 있기 때문에
+-- 주어진 숫자의 지정된 수 만큼 제곱값을 반환한다.
+SELECT POWER(2,1),POWER(2,2),POWER(2,3),POWER(2,0) FROM DUAL;
 
+```
 
-1) ADD_MONTHS : 특정 날짜에 개월수를 더한다.
+## 날짜함수
+|함수|기능|
+|---|------|
+|ADD_MONTHS|특정날짜에 개월수를 더해준다. |
+|MONTHS_BETWEEN|주어진 두 개의 날짜 간격 개월을 반환한다.|
+|NEXT_DAY|주어진 일자가 다음에 나타나는 지정요일(1:일요일 ~ 7:토요일)의 날짜를 반환한다.|
+|LAST_DAY|주어진 일자가 포함된 월의 말일을 반환한다.|
+
+※ 날짜 + 날짜 : 날짜끼리는 더하기가 안됩니다.
+
+- SYSDATE : 현재 날짜
+
+```
+-- 특정 날짜에 개월수를 더한다.
 
 select sysdate, add_months(sysdate, 2)from dual;
 
-문제) 사원테이블에서 모든 사원의 입사일로부터 6개월 뒤의 날짜를 출력
-이름, 입사일, 6개월뒤 날짜 순으로 출력
+문제) 사원테이블에서 모든 사원의 입사일로부터 6개월 뒤의 날짜를 이름, 입사일, 6개월뒤 날짜 순으로 출력
 select first_name, hire_date,add_months(hire_date,6) new_date from employees;
 
 문제) 사번이 120번인 사원이 입사후 3년 6개월째 되는날 진급예정이다. 진급 예정 날짜를 구하시오.
@@ -223,18 +247,32 @@ select first_name, hire_date,mon from employees where trunc(months_between(sysda
 문제) 사번이 120번인 사원이 입사후 3년 6개월이 되는날 퇴사했다. 이 사원의 사번,이름,입사일,퇴사일을 출력
 
 SELECT EMPLOYEE_ID, FIRST_NAME, HIRE_DATE, add_months(HIRE_DATE, 42) fired FROM EMPLOYEES WHERE EMPLOYEE_ID = 120;
-
--날짜형식의 formatting 모델
-    1) SCC또는 CC: 세기
-    2) YYYY 또는  YY: 연도
-    3) MM : 월
-    4) DD : 일
-    5) DAY : 요일
-    6) MON : 월명(JAN), DB버전에 따라서 MONTH : 월이름이 다나온다(JANUARY)로 써야하는 경우도 있다.
-    7) HH,HH24: 시간
-    8) MI : 분
-    9) SS : 초
-    10) SCC : 세기
 ```
+
+오라클에서는 문자열을 날짜형 데이터로 형 변환을 하기 위해서 TO_DATE()함수를 사용합니다.
+- TO_DATE('문자열','날짜포맷')
+
+```
+SELECT to_char(sysdate,'yyyy-mm-dd') FROM dual;
+SELECT to_char(sysdate,'yyyy-mm-dd day') FROM dual;
+SELECT to_char(sysdate,'yyyy-mm-dd HH:MI:SS') FROM dual;
+```
+
+### 날짜형식 FORMATTING 모델
+|모델|기능|
+|---|------|
+|SCC, CC|세기|
+|YYYY,YY|연도|
+|MM|월|
+|DD|일|
+|DAY|요일|
+|MON|월명(JAN)|
+|MONTH|월이름이 다나온다(JANUARY)|
+|HH,HH24|시간|
+|MI|분|
+|SS|초|
+
+<hr>
+
 
 
