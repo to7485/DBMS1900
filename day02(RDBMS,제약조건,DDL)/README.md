@@ -20,14 +20,46 @@
 번호에 대한 이름과 나이를 알고 싶을 때는 Table B에서 번호를 가져와서 그 번호로 Table A에 있는걸 조회하는 거에요. 근데 항상 조회를 할 때는 조건을 건다.<br>
 전체 정보가 필요할 때도 있지만 한 사람의 정보만 필요할 때도 있기 때문.<br>
 
-이러한 구조를 가지는 것을 Table, Relation(오라클), Class라고 부른다.<br>
+## 제약조건(Constraints)
+- 제약조건이란, 테이블에 문제가 되는/ 결함이 있는 데이터가 입력되지 않도록 미리 지정해둔 조건입니다.
+- 제약조건은 테이블을 생성할 때 함께 설정할 수 있고, 추후에 생성하거나 변경할 수 도 있습니다.
 
-![image](https://user-images.githubusercontent.com/54658614/215701179-8c9ad11a-d221-43fc-ad73-62fb01a4ae8e.png)
-
-USER 테이블에 번호가 없고 이름과 나이만 있다고 칩시다. 그런데 동명이인이 있을 수 있잖아요?<br>
-그래서 같은 이름을 조회하면 동며이인도 조회가 되기 때문에 식별하기가 어렵다. 그래서 어떤 값을 찾기 위해서는 중복이 안되는 데이터가 필요하다. 그래야 그 데이터를 조건을 걸어서 가져왔을때 정확하게 우리가 찾는 하나의 정보를 가져올 수 있다. 하나의 테이블에서 중복이 없고 또는 값을 안적어도 되지만(NULL) NULL이 아니고 중복이 안되는 조건을 PK 라고 한다.<br>
-
-![image](https://user-images.githubusercontent.com/54658614/215701253-34d4d9d6-67af-4519-b963-9995ddbebaf9.png)
+※ 이미 데이터가 포함되어 있는 상황에서 제약조건을 함부로 바꾸기 어려우므로 사전에 테이블 설계를 잘 해두는 편이 좋다.
+<table>
+<tr>
+	 <th>제약조건</th>	
+	 <th>NULL 허용여부</th>	
+	 <th>데이터 중복 허용여부</th>	
+	 <th>특징</th>
+</tr>
+<tr>
+	<td>PRIMARY KEY(고유키)</td>
+	<td>NULL 불가</td>
+	<td>중복 불가</td>
+	<td>지정한 열은 유일한 값을 반드시 가져야 함 테이블 당 1개만 지정가능</td>
+</tr>
+	<tr>
+	<td>FOREIGN KEY(외래키)</td>
+	<td colspan="4">다른 테이블 열을 참조하여 해당 테이블에 존재하는 값만 입력 가능<br>다른 테이블의 고유키(PRIMARY KEY)를 참조</td>
+</tr>
+<tr>
+	<td>UNIQUE(유일키)</td>
+	<td>NULL 가능</td>
+	<td>중복 불가 (* NULL끼리는 중복으로 간주하지 않음)</td>
+	<td>지정한 열은 유일한 값을 반드시 가져야 함 테이블 당 1개만 지정가능</td>
+</tr>
+<tr>
+	<td>NOT NULL</td>
+	<td>NULL 불가</td>
+	<td>중복 가능</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHECK</td>
+	<td colspan="4">설정한 조건식을 만족하는 데이터만 입력가능<br>조건식을 만족하지 않는 데이터는 입력이 거부됨</td>
+</tr>
+	
+</table>
 
 ## DDL(Data Definition Language) : 데이터 정의어
 ![image](https://user-images.githubusercontent.com/54658614/215701311-552dc21b-4015-4706-a001-70e59c8b043f.png)
