@@ -61,16 +61,102 @@
 	
 </table>
 
+## 자료형(데이터타입)
+- 데이터타입이란 컬럼이 저장되는 데이터의 유형을 말합니다.
+
+### 문자 데이터 타입
+<table>
+<tr>
+	 <th>데이터타입</th>	
+	 <th>특징</th>
+</tr>
+<tr>
+	<td>CHAR(n)</td>
+	<td>고정길이 문자 / 최대 2000byte / 디폴트 값은 1byte </td>
+</tr>
+<tr>
+	<td> VARCHAR2(n)</td>
+	<td>가변길이 문자 / 최대 4000BYTE / 디폴트 값은 1byte </td>
+</tr>
+<tr>
+	<td>NCHAR(n)</td>
+	<td>고정길이 유니코드 문자(다국어 입력가능) / 최대 2000byte / 디폴트 값은 1byte </td>
+</tr>
+<tr>
+	<td> NVARCHAR(n)</td>
+	<td>가변길이 유니코드 문자(다국어 입력가능) / 최대 2000byte / 디폴트 값은 1byte</td>
+</tr>
+<tr>
+	<td>LONG</td>
+	<td>최대 2GB 크기의 가변길이 문자형 </td>
+</tr>
+<tr>
+	<td>CLOB</td>
+	<td>대용량 텍스트 데이터 타입(최대 4Gbyte)</td>
+</tr>
+<tr>
+	<td> NCLOB</td>
+	<td>대용량 텍스트 유니코드 데이터 타입(최대 4Gbyte)</td>
+</tr>
+	
+</table>
+
+### 숫자 데이터 타입
+- 대부분 NUMBER형을 사용한다.
+<table>
+<tr>
+	 <th>데이터타입</th>	
+	 <th>특징</th>
+</tr>
+<tr>
+	<td>NUMBER(P,S)</td>
+	<td>가변숫자 / P (1 ~ 38, 디폴트 : 38) / S (-84 ~ 127, 디폴트 값 : 0)  / 최대 22byte </td>
+</tr>
+<tr>
+	<td>FLOAT(P)</td>
+	<td>NUMBER의 하위타입 / P (1~128 .디폴트 : 128) / 이진수 기준 / 최대 22byte </td>
+</tr>
+<tr>
+	<td>BINARY_FLOAT</td>
+	<td>32비트 부동소수점 수 / 최대 4byte </td>
+</tr>
+<tr>
+	<td> BINARY_DOUBLE</td>
+	<td> 64비트 부동소수점 수 / 최대 8byte </td>
+</tr>	
+</table>
+
+### 날짜 데이터 타입
+<table>
+<tr>
+	 <th>데이터타입</th>	
+	 <th>특징</th>
+</tr>
+<tr>
+	<td> DATE</td>
+	<td>BC 4712년 1월 1일부터 9999년 12월 31일, 연, 월, 일, 시, 분, 초 까지 입력 가능</td>
+</tr>
+<tr>
+	<td>TIMESTAMP</td>
+	<td>연도, 월, 일, 시, 분, 초 + 밀리초까지 입력가능</td>
+</tr>
+
+</table>
+
 ## DDL(Data Definition Language) : 데이터 정의어
-![image](https://user-images.githubusercontent.com/54658614/215701311-552dc21b-4015-4706-a001-70e59c8b043f.png)
+- 테이블 조작, 제어 관련 쿼리문
+  1. CREATE : 테이블 생성
+  2. DROP : 테이블 삭제 복구도 안됨. 회사에서 쓰지 말것!
+  3. ALTER : 테이블 수정
+	- 테이블명 수정 :ALTER TABLE [원래이름] RENAME TO [새로운 테이블 명]
+	- 컬럼 추가  :ALTER TABLE [테이블명] ADD([새로운 컬럼명] [컬럼 타입])
+	- 컬럼명 변경 :ALTER TABLE [테이블명] RENAME COLUMN [생성된 컬럼명] TO [새로운 컬럼명]
+	- 컬럼 삭제 :ALTER TABLE [테이블명] DROP COLUMN [생성된 컬럼명]
+  4. TRUNCATE : 테이블 내용 전체 삭제 아~어쩔수 없이 버리다 라는 느낌 이것도 복구 안됨
 
-![image](https://user-images.githubusercontent.com/54658614/215701465-b9de4d27-42e2-424b-b1e7-1ef201d29ffb.png)
-
-안적은 타입도 많지만 지금부터 배울 필요는 없고 필요하다 생각이 되면 공부를 하면 되고 NUMBER, VARCHAR2, DATE 세가지만 가지고도 충분히 데이터를 관리할 수 있다.<br>
-엑셀처럼 DataBase도 배워놓으면 만약 나중에 빅데이터를 배울때 도움이 많이 된다.<br>
-
-```
-day02 스크립트 생성
+## day02 스크립트 생성하기
+- 테이블 생성해보기
+```SQL
 CREATE TABLE TBL_MEMBER(
 	NAME VARCHAR2(500),
 	AGE NUMBER
@@ -84,14 +170,15 @@ DROP TABLE TBL_MEMBER;
 
 해당 영역 전체화면 : 클릭 후 CTRL + M
 
-```
+```SQL
 --주석 : 해석하지 못하게 하는 문법
 --1. 쿼리문에 설명글을 달 때
 --2. 지금 당장 사용하지 안흔 소스코드를 실행하고 싶지 않을 때
 ```
 ### 자동차 테이블 생성
-제약 조건 : 테이블을 생성할 때 특정 컬럼에 조건을 부여하여 들어오는 데이터를 검사
-```
+- CONSTRAINT [제약조건이름] [제약조건 종류] (컬럼명)
+
+```SQL
 CREATE TABLE TBL_CAR(
 	ID NUMBER,
 	BRAND VARCHAR2(100),
@@ -101,30 +188,25 @@ CREATE TABLE TBL_CAR(
 );
 ```
 ### 테이블 삭제
-```
-DROP TABLE TBL_CAR;
-```
-### 제약 조건 삭제
-```
-ALTER TABLE TBL_CAR DROP CONSTRAINT CAR_PK;
-```
-### 제약 조건 추가
-```
-ALTER TABLE TBL_CAR ADD CONSTRAINT CAR_PK PRIMARY KEY(ID);
+- DROP TABLE 테이블명;
 
-SELECT * FROM TBL_CAR;	
-```
+### 제약 조건 삭제
+- ALTER TABLE 테이블명 DROP CONSTRAINT 제약조건명;
+
+### 제약 조건 추가
+- 테이블을 이미 생성하고 난후 제약조건을 추가해야 할 때
+- ALTER TABLE 테이블명 ADD CONSTRAINT [제약조건명] [제약조건 종류](컬럼명);
+
 ### 동물테이블 생성
 
-```
+```SQL
 CREATE TABLE TBL_ANIMAL(
-	ID NUMBER PRIMARY KEY, 
---제약조건을 만들어서 PK를 설정하는 법이 있고 이와 같이 간단하게 만드는법도 있다.
-"TYPE" VARCHAR2(100), 
---오라클에서는 TYPE은 명령어 이기 때문에 명령어를 컬럼으로 사용하고 싶다면 쌍따옴표 안에 넣어야 한다.
+	ID NUMBER PRIMARY KEY, --제약조건을 만들어서 PK를 설정하는 법이 있고 이와 같이 간단하게 만드는법도 있다.
+	"TYPE" VARCHAR2(100), --오라클에서는 TYPE은 명령어 이기 때문에 명령어를 컬럼으로 사용하고 싶다면 쌍따옴표 안에 넣어야 한다.
 	AGE NUMBER(3),
 	FEED VARCHAR2(100)
 );
+
 --기존 제약조건 삭제(PK)
 properties > constrains 탭으로 들어가면 제약조건에 이름이 정해져 있다.
 ALTER TABLE TBL_ANIMAL DROP CONSTRAINT Name
@@ -141,12 +223,12 @@ SELECT * FROM TBL_ANIMAL;
 
 #### 학생 테이블 생성
 
-```
+``` SQL
 CREATE TABLE TBL_STUDENT(
 	ID NUMBER,
 	NAME VARCHAR2(100),
 	MAJOR VARCHAR2(100),
-GENDER CHAR(1) DEFAULT 'W' NOT NULL CONSTRAINT BAN_CHAR CHECK(GENDER = 'M' OR GENDER ='W'),
+	GENDER CHAR(1) DEFAULT 'W' NOT NULL CONSTRAINT BAN_CHAR CHECK(GENDER = 'M' OR GENDER ='W'),
 	BIRTH DATE CONSTRAINT BAN_DATE CHECK(BIRTH >= TO_DATE('1980-01-01','YYYY-MM-DD')),
 	CONSTRAINT STD_PK PRIMARY KEY(ID)
 );
@@ -156,24 +238,29 @@ DEFAULT : 값을 넣지 않는다면 들어갈 값
 데이터 추가해보기 dml을 배우지는 않았지만 먼저 한번 써보자 외울필요는 없음<br>
 스튜던트 테이블로 가서 > er 다이어그램 > 테이블 우클릭 > Generate SQL > INSERT<br>
 테이블을 사용할 때 계정명을 붙히지 않을 것이기 때문에 Use Fully 체크 해제 > copy<br>
-```
+
+```SQL
 INSERT INTO TBL_STUDENT
 (ID, NAME, MAJOR, GENDER, BIRTH)
 VALUES(0,'한동석','컴퓨터공학과','A',to_date('1980-01-02','YYYY-MM-DD'));
 ban_char 위반 오류 뜸
+
 INSERT INTO TBL_STUDENT
 (ID, NAME, MAJOR, GENDER, BIRTH)
 VALUES(0,'한동석','컴퓨터공학과','M',to_date('1979-01-02','YYYY-MM-DD'));
 ban_date 위반 오류 뜸
+
 INSERT INTO TBL_STUDENT
 (ID, NAME, MAJOR, GENDER, BIRTH)
 VALUES(0, '한동석', '컴퓨터공학과', 'M' , to_date('2000-05-05','YYYY-MM-DD'));
 
 SELECT * FROM TBL_STUDENT;
+
 INSERT INTO TBL_STUDENT
 (ID,NAME,MAJOR,BIRTH) --GENDER 생략해보기
 VALUES(0,'홍길동','컴퓨터공학과',TO_DATE('2000-09-05','YYYY-MM-DD'));
 STD_PK 위반 오류 학번이 같을수는 없다!
+
 INSERT INTO TBL_STUDENT
 (ID,NAME,MAJOR,BIRTH) --GENDER 생략해보기
 VALUES(1,'홍길동','컴퓨터공학과',TO_DATE('2000-09-05','YYYY-MM-DD'));
