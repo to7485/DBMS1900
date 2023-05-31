@@ -217,11 +217,13 @@ Select Data Source 창이 뜸 오라클 선택 F2 눌러서 이름 day00로 수�
 
 ## SQL문장의 종류
 1. DDL(Data Definition Language) : 데이터 정의어
-    - create, alter, drop등의 키워드를 가지는 문장
+	- create, alter, drop등의 키워드를 가지는 문장
 2. DML(Data Manipulation Language) : 데이터 조작어 사실상 가장 많이 사용하는 쿼리문이 될것! 
-    - select, insert, update, delete를 가지는 문장
+	- select, insert, update, delete를 가지는 문장
 3. DCL(Data Controll Language) : 데이터 제어어
-    - grant, revoke등의 키워드를 가지는 문장
+	- grant, revoke등의 키워드를 가지는 문장
+4. TCL(Transaction Controll Language) : 트랜잭션 제어어(트랜잭션을 제어하는 구문)
+	- commit, rollback, savepoint
 
 html,파이썬이 있다.<br>
 한줄 씩 번역되고 빈번한 수정이 있을 때 효율적이다.<br>
@@ -229,13 +231,14 @@ html,파이썬이 있다.<br>
 일괄처리를 할 때에는 컴파일 언어(c,java,c++)보다 효율이 떨어진다.<br>
 
 ### dbms 소통방식
+
 ```
 사용자
 -------------------------------------
-   ↕		       ↕	     ↕
-고객관리	      ↕	    주문관리
-응용 프로그램	  ↕	   응용프로그램
-    ↕		       ↕   	   ↕
+	↕	↕	↕
+고객관리	     ↕	    주문관리
+응용 프로그램	  ↕	  응용프로그램
+    ↕		↕   	   ↕
 -------------------------------------
 dbms
 -------------------------------------
