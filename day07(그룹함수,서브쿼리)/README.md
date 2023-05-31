@@ -198,19 +198,23 @@ having SUM(salary)>=30000;
 
 ```SQL
 --PLAYER 테이블에서 각 포지션별로 검색
-SELECT “POSITION” FROM PLAYER GROUP BY “POSITION”HAVING “POSITION” IS NOT NULL;
+SELECT "POSITION" FROM PLAYER GROUP BY "POSITION" HAVING "POSITION" IS NOT NULL;
 
 --WHERE절에서 조건을 처리할 수 있다면 반드시 WHERE절에서 먼저 처리해준다.
-SELECT “POSITION” FROM PLAYER
-WHERE “POSITION” IS NOT NULL
-GROUP BY “POSITION”;
+SELECT "POSITION" FROM PLAYER
+WHERE "POSITION" IS NOT NULL
+GROUP BY "POSITION";
 
 --PLAYER 테이블에서 각 포지션별로 몸무게가 80이상인 선수들의 평균 키가 180이상인 포지션,평균키 검색
-SELECT * ”POSITON”,AVG(HEIGHT) FROM PLAYER
+SELECT * "POSITION",AVG(HEIGHT) FROM PLAYER
 WHERE WEIGHT >= 80 AND AVG(HEIGHT) >= 180 WHERE절에서는 집계함수를 사용할 수 없다.
 GROUP BY “POSITION”
 HAVING AVG(HEIGHT)>=180;
 ```
+### HAVING과 WHERE의 차이점
+- WHERE은 기본적인 조건절로서 우선적으로 모든 필드를 조건에 둘 수 있다.
+- HAVING은 GROUP BY된 이후 소그룹화된 새로운 테이블에 조건을 준다.
+
 ## 정렬
 - 검색된 결과의 행을 정렬할 때는 ORDER BY절을 사용한다.
 - 정렬 방법에는 오름차순과 내림차순 두가지가 있다.
