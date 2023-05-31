@@ -302,13 +302,14 @@ dbms
 ※ 도메인(domain) : 데이터베이스에서 필드에 채워질수 있는 값들의 집합이다.
 - 예를들어 성별을 저장해야 하는데 다른것이 오면 안된다.
 
+## 스크립트 생성하기
 
-Scripts -> control + ]
+Scripts -> control + ]<br>
 
-Select Data Source 창이 뜸 오라클 선택 F2 눌러서 이름 day00로 수업 날짜에 맞춰 변경
-글자가 잘안보인다면 windows > Preferences > font 검색 > Colors and Fonts > Basic > Text Font 더블클릭 > 글꼴과 크기 변경 가능
+Select Data Source 창이 뜸 오라클 선택 F2 눌러서 이름 day00로 수업 날짜에 맞춰 변경<br>
+글자가 잘안보인다면 windows > Preferences > font 검색 > Colors and Fonts > Basic > Text Font 더블클릭 > 글꼴과 크기 변경 가능<br>
 
-폰트 크기는 cntl + ,- 로 변경 가능
+폰트 크기는 cntl + ,- 로 변경 가능<br>
 
 ### 조회하기
 SELECT * FROM EMPLOYESS;
