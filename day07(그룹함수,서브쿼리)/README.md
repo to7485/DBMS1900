@@ -3,10 +3,10 @@
 회원가입이나 로그인을 할 때도 쓰인다.<br>
 중복검사를 할 때, 댓글의 전체 개수를 세야 할 때, 등 데이터베이스 부분에서 집계가 가능하다.<br>
 
---집계 함수(NULL은 포함하지 않는다). : 여러 개의 값을 하나의 값으로 집계하여 나타낸다.
+- 집계 함수(NULL은 포함하지 않는다) : 여러 개의 값을 하나의 값으로 집계하여 나타낸다.
  좋을 수도 있으나 평균같은걸 낼 때 조심해야 한다. 전체개수에서 NULL의 개수가 빠져버리기 때문에 NULL인것도 전체 개수에 포함할건지 말건지 결정을 잘 해야한다.
 
---WHERE 절에서는 사용할 수 없다.
+- WHERE 절에서는 사용할 수 없다.
 
 |함수|기능|
 |---|------|
@@ -18,13 +18,13 @@
 |STDDEV|행들의 표준편차를 반환한다.|
 |VARIANCE|행들의 분산을 반환한다.|
 
-```
+```SQL
 SELECT AVG(HEIGHT), MAX(HEIGHT),MIN(HEIGHT),SUM(HEIGHT),COUNT(HEIGHT) FROM PLAYER.
 
 --PLAYER 테이블에서 HEIGHT 개수 검색(NULL 포함해서 COUNT 하기) NULL이라는 값을 포함하려면 NULL 이면 안된다 즉 NVL을 사용해야 한다.
 
 SELECT COUNT(HEIGHT) FROM PLAYER;--> 447개
-SELECT * FROM PLAYER; --> 480개
+SEECT * FROM PLAYER; --> 480개
 SELECT COUNT(NVL(HEIGHT,0)) FROM PLAYER;
 
 **일반적으로 그룹함수와 일반컬럼을 함께 쓸 수 없다.
@@ -62,7 +62,8 @@ select Max(salary),MIN(SALARY), FROM EMPLOYEES WHERE DEAPRTMENT_ID = 50;
 ### 그룹화(GROUP BY)
 - 특정테이블에서 소그룹을 만들어 결과를 분산시켜 얻고자 할 때
 - GROUP BY : ~별(예 : 포지션별 평균 키)
-```
+
+```SQL
 예) 각 부서별 급여의 평균과 총 합을 출력
 
 SELECT DEPARTMENT_ID, COUNT(*), AVG(SALARY), SUM(SALARY) FROM EMPLOYEES GROUP BY DEPARTMENT_ID;
@@ -148,11 +149,11 @@ GROUP BY GROUPING SETS(상품ID, 월);
  ![image](https://github.com/to7485/DBMS1900/assets/54658614/0d56776f-7458-4702-894d-50627e57ee79)
 
 
-### HAVING절
+## HAVING절
 그룹함수에 대한 조건처리가 필요할 때 사용하는 Query<br>
 조건식을 사용할 때 그룹함수가 필요하다면 반드시 having 키워드를 사용해야 한다!!!!!<br>
 
-```
+```SQL
 예) 각 부서의 급여의 최대값, 최소값, 인원수를 출력하자 단, 급여의 최대값이 8000이상인 결과만 보여줄 것.
 
 select department_id, MAX(salary),MIN(salary),COUNT(*)
@@ -194,7 +195,8 @@ having SUM(salary)>=30000;
 --HAVING 조건식<br>
 
 ### 어떨때 HAVING을 쓰고 어떨 때 WHERE 쓰는지 알아보도록 하자
-```
+
+```SQL
 --PLAYER 테이블에서 각 포지션별로 검색
 SELECT “POSITION” FROM PLAYER GROUP BY “POSITION”HAVING “POSITION” IS NOT NULL;
 
@@ -209,18 +211,32 @@ WHERE WEIGHT >= 80 AND AVG(HEIGHT) >= 180 WHERE절에서는 집계함수를 사�
 GROUP BY “POSITION”
 HAVING AVG(HEIGHT)>=180;
 ```
-```
---ORDER BY : 정렬
--- ASC : 오름차순
--- DESC : 내림차순
+## 정렬
+- 검색된 결과의 행을 정렬할 때는 ORDER BY절을 사용한다.
+- 정렬 방법에는 오름차순과 내림차순 두가지가 있다.
+	- 오름차순(ASCENDING) : 작은값부터 큰값으로 정렬
+	- 내림차순(DESCENDING) : 큰값부터 작은값으로 정렬
+
+```SQL
 SELECT * FROM PLAYER ORDER BY HEIGHT;
 SELECT * FROM PLAYER ORDER BY HEIGHT DESC;
-SELECT * FROM PLAYER ORDER BY 12 DESC; -> 12번째 컬럼을 정렬하겠다.
+SELECT * FROM PLAYER ORDER BY 12 DESC; -> 12번째 컬럼으로 정렬하겠다.
+
+-- 컬럼의 개수를 제한하여 검색했다면 조회된 컬럼의 순서대로 정렬을 해야 한다.
+SELECT HEIGHT, weight
+FROM player 
+ORDER BY 2 desc; -> 여기서 2는 몸무게 컬럼이 된다.
+
 --PLAYER 테이블에서 키순, 몸무게순(오름차순)으로 검색
+--첫번째 컬럼에 값이 같으면 두번째 정렬을 한다.
+SELECT HEIGHT, weight FROM player ORDER BY height ASC, weight ASC;
+
 --NULL이 아닌 값만 검색
---첫번째 컬럼 값이 같으면 두번째 정렬을 한다.
-```
-```
+SELECT HEIGHT, weight
+FROM player 
+WHERE height IS NOT NULL AND weight IS NOT null 
+ORDER BY height ASC, weight asc;
+
 예) 부서별, 직종별로 그룹을 나눠서 인원수를 출력 단, 부서번호가 낮은순으로 정렬하시오.
 
 SELECT DEPARTMENT_ID, JOB_ID, COUNT(*) 
@@ -228,16 +244,13 @@ FROM EMPLOYEES
 GROUP BY DEPARTMENT_ID, JOB_ID 
 ORDER BY DEPARTMENT_ID;
 
-
-SELECT PLAYER_NAME, HEIGHT, WEIGHT FROM PLAYER;
-ORDER BY 2, 3 WHERE HEIGHT IS NOT NULL AND WEIGHT IS NOT NULL;
 두번째에 중복이 있다면 3번째 컬럼으로 정렬
 
 사실 정렬은 좀 느려서 데이터가 적을 때 주로 사용을 한다.
- ```
+```
  
-### CASE문
-- CASE WHEN THEN ELSE END 어떠한 조건이 어떤 값을 뽑겠다고 하는것
+## CASE문
+- CASE WHEN THEN ELSE END 어떠한 조건에 맞춰 값을 출력해주는 
 - CASE WHEN 조건식 THEN '참 값' ELSE '거짓 값' END
 
 데이터의 값을 WHEN의 조건과 차례대로 비교한 후 일치하는 값을 찾아 THEN 뒤에 있는 결과값을 리턴합니다.<br>
@@ -245,8 +258,8 @@ ORDER BY 2, 3 WHERE HEIGHT IS NOT NULL AND WEIGHT IS NOT NULL;
 ELSE는 일치하는 값이 없을 때 선택할 디폴트값인데 필요 없으면 생략할 수 있습니다.<br>
 WHEN의 값 중 일치하는 것이 없고 ELSE도 없다면 CASE 문은 NULL을 리턴합니다.<br>
 
-```
-```
+
+```SQL
 --EMP 테이블에서 SAL 3000이상이면 HIGH 1000이상이면 MID, 다 아니면 LOW
 SELECT * FROM EMP;
 SELECT ENAME 사원명, SAL 급여,
@@ -274,13 +287,13 @@ SELECT STADIUM_NAME 경기장, SEAT_COUNT 좌석수,
 	CASE
 		WHEN SEAT_COUNT BETWEEN 0 AND 30000 THEN 'S'
 		ELSE
-			(
-			CASE
-				WHEN SEAT_COUNT BETWEEN 30001 AND 50000 THEN 'M'
-				ELSE 'L'
-				END
-			)
+		(
+		CASE
+			WHEN SEAT_COUNT BETWEEN 30001 AND 50000 THEN 'M'
+			ELSE 'L'
 		END
+		)
+	END
 FROM STADIUM;
 
 --PLAYER 테이블에서 WEIGHT가 50이상 70이하이면 'L'
@@ -290,23 +303,29 @@ SELECT PLAYER_NAME 선수이름 ,WEIGHT||'KG' 몸무게,
 		WHEN WEIGHT BETWEEN 50 AND 70 THEN 'L'
 		WHEN WEIGHT BETWEEN 71 AND 80 THEN 'M'
 		ELSE
-			(
-			CASE WHEN WEIGHT IS NULL THEN '미등록'
+		(
+		CASE 
+			WHEN WEIGHT IS NULL THEN '미등록'
 			ELSE 'H'
-			END
-			)
+		END
+		)
 	END 체급
 FROM PLAYER; 
 ```
 
-### SUB QUERY
+## SUB QUERY
 쿼리문안에 또 쿼리문이 있는것 SELECT문 안에 SELECT가 하나 더 있다.
 
-- FROM절 : IN LINE VIEW
-- SELECT절 : SCALAR
-- WHERE절 : SUB QUERY
-```
+- FROM절(IN LINE VIEW) : 쿼리문으로 출력되는 결과를 테이블처럼 사용하겠다.
+- SELECT절(SCALAR) : 하나의 컬럼처럼 사용되는 서브쿼리
+- WHERE절(SUB QUERY) : 하나의 변수처럼 사용한다.
+	- 단일행 서브쿼리 : 쿼리 결과가 단일행만을 리턴하는 서브쿼리입니다.
+	- 다중행 서브쿼리 : 쿼리 결과가 다중행을 리턴하는 서브쿼리입니다.
+	- 다중컬럼 서브쿼리 : 쿼리 결과가 다중컬럼을 리턴하는 서브쿼리입니다.
+
+```SQL
 --PLAYER 테이블에서 TEAM_ID가 'K01'인 선수 중 POSITION이'GK'인 선수
+-- 실제 테이블 대신에 서브쿼리의 결과를 테이블처럼 사용한다.
 SELECT * FROM ( SELECT * FROM player WHERE TEAM_ID='K01') WHERE "POSITION"='GK';
 
 --PLAYER 테이블에서 평균키보다 작은 선수 검색
