@@ -37,7 +37,7 @@ X > 10
 - AND : 두 조건식이 모두 참이면 참
 - OR : 둘 중 하나라도 참이면 참
 
-```
+```SQL
 SELECT * FROM FLOWER; *는 컬럼명부터 검색을 하기 때문에 실제로 컬럼을 쳐주는게 속도가 훨씬 빠르다. 지금은 데이터가 별로 없어서 차이가 안나지만 나중에 백만, 천만개 있으면 속도 차이가 분명히 난다.
 SELECT FLOWERNAME,FLOWERCOLOR, FLOWERPRICE FROM FLOWER;
 
