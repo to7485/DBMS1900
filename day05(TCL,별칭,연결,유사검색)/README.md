@@ -129,16 +129,18 @@ SELECT PLAYER_NAME||'의 별명은'|| NICKNAME||'이다' FROM PLAYER
 
 SELECT * FROM PLAYER
 --00의 포지션은 00이다.
-SELECT E_PLAYER_NAME||'의 포지션은'||”POSITION”||'이다' 작전회의 FROM PLAYER;
+SELECT E_PLAYER_NAME||'의 포지션은'||"POSITION"||'이다' 작전회의 FROM PLAYER;
+```
+## LIKE(유사검색)
+- LIKE : 포함된 문자열의 값을 찾음, 문자의 개수도 제한을 줄 수 있음.
+- % : 모든값
+- _ : 하나의 값
+ex)'M%' : M으로 시작하는 모든 값<br>
+ex)'%a' : a로 끝나는 모든 값<br>
+ex)'%a%' : 값의 어디든 a를 포함하고 있는 모든 값(앞,뒤,중간 어딘가에 존재하면 된다.)<br>
+ex)'M_ _ _ _' : M으로 시작하는 값들 중 전체 길이가 5글자인 값<br>
 
---LIKE : 포함된 문자열의 값을 찾음, 문자의 개수도 제한을 줄 수 있음.
--- % : 모든값
--- _ : 하나의 값
-ex)'M%' : M으로 시작하는 모든 값
-ex)'%a' : a로 끝나는 모든 값
-ex)'%a%' : 값의 어디든 a를 포함하고 있는 모든 값
-ex)'M_ _ _ _' : M으로 시작하는 값들 중 전체 길이가 5글자인 값
-
+```SQL
 예)사원테이블에서 사원들의 이름 중 M으로 시작하는 사원의 정보를 사번, 이름, 직종 순으로 출력
 select employee_id, first_name, job_id from employees where first_name LIKE 'M%';
 %는 뒤로는 뭐가 몇글자가 오든 상관 안하겠다는 의미
@@ -156,6 +158,7 @@ select employee_id, first_name from employees where first_name like 'M______'
 select employee_id, first_name from employees where first_name like '_ _ a%';
 
 문제) 이름에 소문자o가 들어가면서 이름이 a로 끝나는 사원들의 정보를 이름, 급여 순으로 조회
+-- o와 a가 동시에 존재하는 이름을 검색, 단 o다음에 a가존재해야 한다.
 select first_name, salary from employees where first_name like '%o%a';
 
 문제) 이름이 H로 시작하면서 6글자 이상인 사원들의 정보를 사번, 이름 순으로 조회
