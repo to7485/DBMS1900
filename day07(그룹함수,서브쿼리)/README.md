@@ -150,8 +150,8 @@ GROUP BY GROUPING SETS(상품ID, 월);
 
 
 ## HAVING절
-그룹함수에 대한 조건처리가 필요할 때 사용하는 Query<br>
-조건식을 사용할 때 그룹함수가 필요하다면 반드시 having 키워드를 사용해야 한다!!!!!<br>
+- 그룹함수에 대한 조건처리가 필요할 때 사용하는 Query
+- 조건식을 사용할 때 그룹함수가 필요하다면 반드시 having 키워드를 사용해야 한다!!!!!
 
 ```SQL
 예) 각 부서의 급여의 최대값, 최소값, 인원수를 출력하자 단, 급여의 최대값이 8000이상인 결과만 보여줄 것.
@@ -254,7 +254,7 @@ ORDER BY DEPARTMENT_ID;
 ```
  
 ## CASE문
-- CASE WHEN THEN ELSE END 어떠한 조건에 맞춰 값을 출력해주는 
+- CASE WHEN THEN ELSE END 어떠한 조건에 맞춰 값을 출력해주는 문법
 - CASE WHEN 조건식 THEN '참 값' ELSE '거짓 값' END
 
 데이터의 값을 WHEN의 조건과 차례대로 비교한 후 일치하는 값을 찾아 THEN 뒤에 있는 결과값을 리턴합니다.<br>
@@ -264,6 +264,46 @@ WHEN의 값 중 일치하는 것이 없고 ELSE도 없다면 CASE 문은 NULL을
 
 
 ```SQL
+
+SELECT ename
+     , deptno
+     , CASE WHEN deptno = '10' THEN 'New York'
+            WHEN deptno = '20' THEN 'Dallas'
+            ELSE 'Unknown'
+       END AS loc_name
+  FROM emp
+ WHERE job = 'MANAGER';
+ 
+ 
+SELECT ROUND(AVG(CASE JOB_ID WHEN 'IT_PROG' THEN SALARY END),2) 평균급여
+
+FROM EMPLOYEES;
+CASE 와 WHEN 사이에 비교하고자 하는 Column 을 넣고
+WHEN 과 THEN 사이에 비교하고자 하는 값을 넣어서 비교하는 방법입니다.
+ 
+ SELECT ename
+     , deptno
+     , CASE deptno 
+            WHEN 10 THEN 'New York'
+            WHEN 20 THEN 'Dallas'
+            ELSE 'Unknown'
+       END AS loc_name
+  FROM scott.emp
+ WHERE job = 'MANAGER'
+ 
+ -- where절에서의 사용
+ SELECT ename, sal, CASE
+			WHEN sal >= 2900 THEN '1등급'
+			WHEN sal >= 2700 THEN '2등급'
+			WHEN sal >= 2000 THEN '3등급'
+		END AS SAL_GRADE
+FROM EMP a
+WHERE job = 'MANAGER' AND (CASE WHEN sal >= 2900 THEN 1
+				WHEN sal >= 2700 THEN 2
+				WHEN sal >= 2000 THEN 3
+			    END) = 1;
+
+
 --EMP 테이블에서 SAL 3000이상이면 HIGH 1000이상이면 MID, 다 아니면 LOW
 SELECT * FROM EMP;
 SELECT ENAME 사원명, SAL 급여,
@@ -279,11 +319,6 @@ CASE 문은 전체적으로 하나의 값으로 평가되며 값이 올 수 있�
 따라서 SELECT 문의 필드 목록에 사용할 수도 있고 WHERE 절의 조건문에도 사용할 수 있습니다.
 
 
-SELECT ROUND(AVG(CASE JOB_ID WHEN 'IT_PROG' THEN SALARY END),2) 평균급여
-FROM EMPLOYEES;
-CASE 와 WHEN 사이에 비교하고자 하는 Column 을 넣고
-WHEN 과 THEN 사이에 비교하고자 하는 값을 넣어서 비교하는 방법입니다.
- 
 --STADIUM 테이블에서 SEAT_COUNT 0DLTKD 30000이하면 'S'
 --30001이상 50000이하면 'M' 다 아니면 'L'
 --중첩 케이스문
