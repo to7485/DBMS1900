@@ -12,7 +12,7 @@
   - 테이블명A JOIN 테이블명B ON 조건식
 
 
-![image](https://github.com/to7485/DBMS1900/assets/54658614/ec1e1ec4-6182-4476-ac97-cd9917c57002)
+![image](https://github.com/to7485/DBMS1900/assets/54658614/a02526b4-00d1-45dc-9954-ad7e756c0410)
 
 ```SQL
 --EMP 테이블의 부서번호로 DEPT테이블의 지역 검색하기.
