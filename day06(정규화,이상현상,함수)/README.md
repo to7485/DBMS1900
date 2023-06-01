@@ -52,6 +52,7 @@ X -> Y4<br>
 ## 정규화
 - 테이블 만들때 모델링을 하면서 정확하게 만들었지만 불필요한 컬럼이라던지 불필요한 요소를 걸러내는 작업이 필요하다.
 - 정규화 라는 규칙에 맞게끔 설계를 해야한다는 뜻이다.
+- 논리 모델링시 정규화를 진행하게 된다.
 
 정규화 : 삽입/수정/삭제의 이상현상을 제거, 데이터의 중복 최소화, 대부분 3차 정규화 까지만 진행<br>
 1차,2차 진행하면서 5차까지 하는 경우가 있는데 정규화를 하다보면 하나의 테이브를 계속 분리를 해서 데이터를 가져오는 작업을 할 때 불편하다. 그래서 보통 3차 정규화 까지 진행을 한다.<br>
@@ -86,7 +87,6 @@ X -> Y4<br>
 ![image](https://github.com/to7485/DBMS1900/assets/54658614/1ce95ab2-d5f7-4624-bf9a-c5bb62e79a2f)
 
 
-
 - 3차 정규화(3NF) :  2차 정규화의 조건을 만족하면서 이행적 함수 종속 제거를 제거해야 한다.
 	- 하나의 컬럼이 다른 컬럼을 대표할 수 없다.<br>
 
@@ -102,9 +102,11 @@ X(회원ID) -> Z(거주지) 의존성을 가진다.<br>
 
 데이터베이스에서 정규화가 필요한 이유 : 데이터베이스를 잘못 설계하면 불필요한 데이터 중복으로인해 공간이 낭비된다. 이러한 현상을 (Anomaly)라고 한다.
 
+
+## 이상현상(Anormally)
+
 ![image](https://user-images.githubusercontent.com/54658614/216899745-f0096be9-e560-40d9-82af-ddfaf26f1367.png)
 
-### 이상현상의 종류
   -삽입이상<br>
 > 새 데이터를 삽입하기 위해 불필요한 데이터도 삽입해야 하는 문제
   EX)담당 프로젝트가 정해지지 않은 사원이 있다면, 프로젝트 코드에 NULL을 작성할 수 없으므로 이 사원은 테이블에 추가할 수 없다. 따라서 '미정'이라는 프로젝트 코드를 따로 만들어서 삽입해야한다.
@@ -121,9 +123,7 @@ X(회원ID) -> Z(거주지) 의존성을 가진다.<br>
 이 관련성을 "함수적 종속성"(Functional Dependecy)이라고 한다.<br>
 따라서 하나의 테이블에서는 하나의 함수적 종속성만 존재하도록 정규화를 한다.<br>
 
-
-
-### NULL
+## NULL
 NULL : 정의되지 않은 값<br>
 	빈 값 대신 미정 값을 부여할 때 사용 가능(PK는 불가능, FK는 가능)<br>
 
@@ -141,22 +141,23 @@ NULL 값을 다른 값으로 변경<br>
 	NVL() : NULL값 대신 다른 값으로 변경 후 검색<br>
 	NVL2() : NULL일 때의 값, NULL이 아닐 때의 값을 각각 설정<br>
   
-```
+```SQL
 --PLAYER 테이블에서 POSITION이 NULL인 선수 검색
-SELECT * FROM PLAYER WHERE “POSITION” IS NULL;
-SELECT * FROM PLAYER WHERE “POSITION” IS NOT NULL;
+SELECT * FROM PLAYER WHERE "POSITION" IS NULL;
+SELECT * FROM PLAYER WHERE "POSITION" IS NOT NULL;
 
 --PLAYER 테이블에서 POSITION이 NULL이면 '미정'으로 결과 출력하기
-SELECT NVL(”POSITION”,'미정') FROM PLAYER WHERE “POSITION” IS NULL;
-SELECT PLAYER_NAME “선수 이름”, NVL(”POSITION”,'미정') 포지션 FROM PLAYER;
-SELECT PLAYER_NAME “선수 이름”, NVL2(”POSITION”,'확정','미정') AS 포지션 FROM PLAYER;
+SELECT NVL("POSITION",'미정') FROM PLAYER WHERE "POSITION" IS NULL;
+SELECT PLAYER_NAME “선수 이름”, NVL("POSITION",'미정') 포지션 FROM PLAYER;
+SELECT PLAYER_NAME “선수 이름”, NVL2("POSITION",'확정','미정') AS 포지션 FROM PLAYER;
 
 --PLAYER 테이블에서 NATION이 NULL이 아니면 등록, NULL이면 미등록으로 변경
-SELECT PLAYER_NAME “선수 이름”, NVL(NATION, '등록','미등록')”국가 등록 여부” FROM PLAYER;
+SELECT PLAYER_NAME "선수 이름", NVL(NATION, '등록','미등록') "국가 등록 여부" FROM PLAYER;
 ```
-함수 : 기본적으로 쿼리문을 더욱 강력하게 하고 데이터값을 조작하는데 도움이 되도록 하는 메서드의 개념<br>
-1)	자원에 대한 연산을 수행할 수 있다.
-2)	개별적인 데이터 항목을 수행할 수 있다.
+
+## 함수 : 기본적으로 쿼리문을 더욱 강력하게 하고 데이터값을 조작하는데 도움이 되도록 하는 메서드의 개념
+1. 자원에 대한 연산을 수행할 수 있다.
+2. 개별적인 데이터 항목을 수행할 수 있다.
 
 ## SQL함수
 - 사용자가 필요한 기능을 만드는 함수가 아닌, 오라클 자체적으로 제공하는 함수
@@ -184,7 +185,7 @@ SELECT PLAYER_NAME “선수 이름”, NVL(NATION, '등록','미등록')”국�
 |LENGTH|문자열의 길이를 반환한다.|
 |REPLACE|첫 번째 파라미터로 지정한 문자를 두번째 파라미터로 지정한 문자로 바꿔준다.|
 
-```
+```SQL
 -- 지정된 문자 ASCII값을 반환한다.
 SELECT ASCII('A') FROM DUAL; --결과 : 65
 
@@ -250,7 +251,7 @@ SELECT REPLACE(FIRST_NAME,'el','**') FROM EMPLOYEES WHERE DEPARTMENT_ID = 50;
 |MOD|나누기 후 나머지를 반환한다.|
 |POWER|주어진 숫자의 지정된 수 만큼의 제곱값을 반환한다.|
 
-```
+```SQL
 -- 절대값을 반환한다.
 SELECT -10,ABS(-10) FROM DUAL;
 
@@ -291,7 +292,7 @@ SELECT POWER(2,1),POWER(2,2),POWER(2,3),POWER(2,0) FROM DUAL;
 
 - SYSDATE : 현재 날짜
 
-```
+```SQL
 -- 특정 날짜에 개월수를 더한다.
 
 select sysdate, add_months(sysdate, 2)from dual;
@@ -338,13 +339,13 @@ SELECT NEXT_DAY(SYSDATE, 'SUN')    FROM DUAL;
 SELECT LAST_DAY(TO_DATE('2022-01-17', 'YYYY-MM-DD')) FROM dual
 ```
 
-오라클에서는 문자열을 날짜형 데이터로 형 변환을 하기 위해서 TO_DATE()함수를 사용합니다.
-- TO_DATE('문자열','날짜포맷')
+오라클에서는 날짜형 데이터를 문자열 데이터로 변환하는 TO_CHAR()함수를 사용합니다.
+- TO_CHAR('문자열','날짜포맷')
 
-```
-SELECT to_char(sysdate,'yyyy-mm-dd') FROM dual;
-SELECT to_char(sysdate,'yyyy-mm-dd day') FROM dual;
-SELECT to_char(sysdate,'yyyy-mm-dd HH:MI:SS') FROM dual;
+```SQL
+SELECT TO_CHAR(sysdate,'yyyy-mm-dd') FROM dual;
+SELECT TO_CHAR(sysdate,'yyyy-mm-dd day') FROM dual;
+SELECT TO_CHAR(sysdate,'yyyy-mm-dd HH:MI:SS') FROM dual;
 ```
 
 ### 날짜형식 FORMATTING 모델
@@ -360,8 +361,3 @@ SELECT to_char(sysdate,'yyyy-mm-dd HH:MI:SS') FROM dual;
 |HH,HH24|시간|
 |MI|분|
 |SS|초|
-
-<hr>
-
-
-
