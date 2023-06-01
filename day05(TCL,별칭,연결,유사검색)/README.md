@@ -91,11 +91,13 @@ WHERE HEIGHT >= 180;
 
 SELECT * FROM
 WHERE HEIGHT >= 180;
+```
+## ALIAS 별칭
+- AS(ALIAS) : 별칭	컬럼이 너무 길다면 별명을 쥐서 대신 사용할 수 있음
+    - SELECT절 : AS 뒤에 별칭 작성, 한칸 띄우고 작성
+    - FROM절 : 한 칸 띄우고 작성
 
---AS(ALIAS) : 별칭	컬럼이 너무 길다면 별명을 쥐서 대신 사용할 수 있음
---SELECT절 : AS 뒤에 별칭 작성, 한칸 띄우고 작성
---FROM절 : 한 칸 띄우고 작성
-
+```SQL
 SELECT PLAYER_ID AS "선수 번호" FROM PLAYER
 SELECT PLAYER_ID "선수 번호" FROM PLAYER;
 SELECT PLAYER_ID "선수 번호", PLAYER_NAME "선수 이름" FROM PLAYER;
@@ -116,8 +118,12 @@ SELCT * FROM TEAM;
 SELECT T.TEAM_ID "팀 아이디", S.ADDRESS "주소", T.TEL FROM STARDIUM S, TEAM T;
 
 커밋하기 귀찮으니까 다시 오토커밋으로 바꿔주세요.
+```
 
---CONCATENATION(연결) : ||
+## CONCATENATION(연결)
+- CONCATENATION(연결) : ||
+
+```SQL
 --누구누구의 별명은 뭐뭐 이다.
 SELECT PLAYER_NAME||'의 별명은'|| NICKNAME||'이다' FROM PLAYER
 
