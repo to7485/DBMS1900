@@ -140,6 +140,8 @@ ex)'%a' : a로 끝나는 모든 값<br>
 ex)'%a%' : 값의 어디든 a를 포함하고 있는 모든 값(앞,뒤,중간 어딘가에 존재하면 된다.)<br>
 ex)'M_ _ _ _' : M으로 시작하는 값들 중 전체 길이가 5글자인 값<br>
 
+만약 데이터에 _가 들어있는 데이터를 찾고싶다면 %\_% 이렇게 써야 한다.<br>
+
 ```SQL
 예)사원테이블에서 사원들의 이름 중 M으로 시작하는 사원의 정보를 사번, 이름, 직종 순으로 출력
 select employee_id, first_name, job_id from employees where first_name LIKE 'M%';
