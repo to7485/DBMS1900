@@ -93,7 +93,7 @@ ERD 보여주며 부모와 자식 관계를 다시한번 구분시켜주자
 - DELETE는 복구가 가능하다
 - TRUNCATE는 복구가 불가능하다 -> 퇴사준비 ㄱㄱ
 
-```
+```SQL
 주인과 펫에 데이터 넣어보기
 
 SELECT * FROM PET;
@@ -158,7 +158,7 @@ cmd > sqlplus hr/hr<br>
 @ 드래그앤 드랍 a1~4 다 추가하고 오류가 나면 무시하기<br>
 
 ide와서 테이블 새로고침<br>
-```
+```SQL
 SELECT * FROM PLAYER;
 
 --PLAYER 테이블에서 TEAM_ID가 'K01'인 선수 검색
