@@ -42,7 +42,7 @@
   - VIEW
   
  - 10일차
-  - 프로시저
-  - PL/SQL문
-  - SEQUENCE
+    - 프로시저
+    - PL/SQL문
+    - SEQUENCE
   
