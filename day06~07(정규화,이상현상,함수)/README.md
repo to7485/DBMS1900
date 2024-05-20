@@ -238,6 +238,15 @@ select length('john') from dual;
 문) 부서번호가 50번인 사원들의 이름을 출력하되 이름중 'el'을 모두 '**'로 대체하여 출력하시오
 SELECT REPLACE(FIRST_NAME,'el','**') FROM EMPLOYEES WHERE DEPARTMENT_ID = 50;
 
+-- 이름이 6글자 이상인 사원의 사번과 이름, 급여를 출력
+SELECT employee_id, first_name, salary
+FROM EMPLOYEES e 
+WHERE length(first_name)>=6;
+
+-- 사원테이블에서 이름, 급여, 급여 1000당 0의 개수를 채워
+-- 조회하세요
+-- ex) 급여가 8,000이다. 00000000로 표현
+
 ```
 
 ## 숫자함수
